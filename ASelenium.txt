@@ -1,0 +1,108 @@
+Implicitly wait :
+Implicit waits are set globally for entire duration of webdriver session
+Webdriver wait for a specified amount of time before it throws exception
+(NoSuchElementException)
+
+Explicit Waits:
+Explicit Waits are used for specific conditions and are applied to  individual webDriver commands
+With thsi wait ,WebDriver waits until a certian condition is met before proceeding with the execution of next step 
+in test script.
+implemented using WebDriverWait class along with ExpectedConditions class
+ 
+Fluent Waits:
+it is type of explicit wait  that allows you to specify the frequency with which webdriver should
+check for expected conditions
+with this type of waits,u can define the max amt of time to wait for a condition and polling interval 
+Implemented using Wait interface along with FluentWait class.
+Fluent waits are useful for handling scenarios where elements may appear or disappear intermittently or
+when response time of the application is variable.
+
+--------------------------
+java -jar selenium-server-4.15.0.jar standalone
+java -jar selenium-server-4.15.0.jar hub
+java -jar selenium-server-4.15.0.jar node –hub http://<hub-ip>:4444
+--------------------------------------------------------------------------------------------------
+driver.switchTo().newWindow(WindowType.TAB); // OPENS NEW TAB
+//driver.switchTo().newWindow(WindowType.WINDOW); // OPENS IN ANOTHER WINDOW
+
+//3) scroll down till end of the page/document
+		js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+
+// go back to initial position
+		js.executeScript("window.scrollBy(0,-document.body.scrollHeight)");
+//select tag
+WebElement drpCountryEle=driver.findElement(By.xpath("//select[@id='country-list']"));
+		Select drpCountry=new Select(drpCountryEle);
+
+driver.switchTo().defaultContent();// switch back to page when we switch to frame
+
+Actions act=new Actions(driver);
+		
+		
+		//ctrl +a
+		
+		act.keyDown(Keys.CONTROL).sendKeys("a").keyUp(Keys.CONTROL).perform();
+		
+		
+		//ctrl +c
+		act.keyDown(Keys.CONTROL).sendKeys("c").keyUp(Keys.CONTROL).perform();
+		
+		
+		//tab
+		act.keyDown(Keys.TAB).keyUp(Keys.TAB).perform();
+		//act.sendKeys(Keys.TAB).perform(); // only if want to press single key then prefer this
+		
+		//ctrl+v
+		act.keyDown(Keys.CONTROL).sendKeys("v").keyUp(Keys.CONTROL).perform();
+
+HeadlessTesting----------
+////////    chrome browser    ///////////		
+		
+		//Appraoch1) Headless mode
+		/*ChromeOptions options=new ChromeOptions();
+		options.setHeadless(true);
+		
+		WebDriverManager.chromedriver().setup();
+		WebDriver driver=new ChromeDriver(options);
+		*/
+		
+		//Appraoch2) WDM 5.1+
+		//ChromeOptions options=new ChromeOptions();
+		//options.setHeadless(true);
+		
+		//WebDriver driver=WebDriverManager.chromedriver().capabilities(options).create();
+
+
+------------------------------------------------------------------------------------------------
+
+for(WebElement linkEle:links)
+		{
+			String hrefAttValue=linkEle.getAttribute("href");
+			
+			// pre-requisite for checking broken link
+			if(hrefAttValue==null || hrefAttValue.isEmpty())
+			{
+				System.out.println("href attribute value is empty.");
+				continue;
+			}
+			
+			//Checking link is broken or not
+			URL linkurl=new URL(hrefAttValue); // convert String --> URL format
+						
+			HttpURLConnection conn=(HttpURLConnection) linkurl.openConnection(); ////send request to server - open , connect
+			
+			conn.connect();
+			
+			if(conn.getResponseCode()>=400)
+			{
+				System.out.println(hrefAttValue+"     "+"====> Broken Link");
+				brokenlinks++;
+			}
+			else
+			{
+				System.out.println(hrefAttValue+"     "+"====> Not Broken Link");
+			}
+			
+			
+		}
+		
